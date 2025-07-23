@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sync"
 	"time"
-	"url_shortner/models"
-	"url_shortner/repository"
-	"url_shortner/utils"
+	"github.com/vvikash157/url_shortener/models"
+	"github.com/vvikash157/url_shortener/repository"
+	"github.com/vvikash157/url_shortener/utils"
 
 	"github.com/pkg/errors"
 )

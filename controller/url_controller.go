@@ -3,8 +3,8 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
-	"url_shortner/models"
-	"url_shortner/services"
+	"github.com/vvikash157/url_shortener/models"
+	"github.com/vvikash157/url_shortener/services"
 
 	"github.com/gorilla/mux"
 )

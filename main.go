@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"url_shortner/config"
-	"url_shortner/controller"
-	"url_shortner/repository"
-	"url_shortner/services"
+
+	"github.com/vvikash157/url_shortener/config"
+	"github.com/vvikash157/url_shortener/controller"
+	"github.com/vvikash157/url_shortener/repository"
+	"github.com/vvikash157/url_shortener/services"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"

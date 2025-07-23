@@ -1,4 +1,4 @@
-module url_shortner
+module github.com/vvikash157/url_shortener
 
 go 1.24.0
 
@@ -13,5 +13,5 @@ require (
 
 require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
-	github.com/onsi/gomega v1.37.0 // indirect
+	github.com/onsi/gomega v1.38.0 // indirect
 )

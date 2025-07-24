@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
+
 	"github.com/vvikash157/url_shortener/models"
 	"github.com/vvikash157/url_shortener/services"
 
@@ -27,7 +28,7 @@ func (s *UrlController) ShortUrlHandler(w http.ResponseWriter, r *http.Request) 
 
 	resp, err := s.services.UrlShortener(req)
 	if err != nil {
-		http.Error(w, "error while getting response from service UrlShortener", http.StatusForbidden)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

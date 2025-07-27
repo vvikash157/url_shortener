@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 )
 
 type UrlRepository interface {
@@ -21,6 +22,7 @@ func NewPostgresUrlRepository(db *sql.DB) *PostgresUrlRepository {
 
 func (s *PostgresUrlRepository) InsertUrl(longUrl, shortCode string) error {
 	_, err := s.db.Exec("INSERT INTO urls(long_url,short_url) values($1,$2)", longUrl, shortCode)
+	fmt.Printf("url is inserted into DB %s", shortCode)
 	return err
 }
 

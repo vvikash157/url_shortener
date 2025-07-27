@@ -53,10 +53,6 @@ func TestShortUrlHandler_InvalidRequest(t *testing.T) {
 	mockService := mocks.NewMockURLService(ctrl)
 	controler := NewUrlController(mockService)
 
-	//prepare input and expectations
-	// input:=models.ShortenRequest{LongUrl: ""}
-	// expectations:=models.ShortenResponse{ShortUrl: }
-
 	//prepare request response recoder
 	req := httptest.NewRequest("POST", "/shortner", nil)
 	w := httptest.NewRecorder()
@@ -80,7 +76,7 @@ func TestShortUrlHandler_ServiceError(t *testing.T) {
 
 	input := `{"long_url":"www.abc.com/vvviikkkaasshh"}`
 
-	mockService.EXPECT().UrlShortener(models.ShortenRequest{LongUrl:"www.abc.com/vvviikkkaasshh"}).Return(models.ShortenResponse{}, errors.New("simulating service error"))
+	mockService.EXPECT().UrlShortener(models.ShortenRequest{LongUrl: "www.abc.com/vvviikkkaasshh"}).Return(models.ShortenResponse{}, errors.New("simulating service error"))
 
 	req := httptest.NewRequest("POST", "/shortner", bytes.NewBufferString(input))
 	req.Header.Set("Content-Type", "application/json")

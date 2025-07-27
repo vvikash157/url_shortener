@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 	"time"
+
 	"github.com/vvikash157/url_shortener/models"
 	"github.com/vvikash157/url_shortener/repository"
 	"github.com/vvikash157/url_shortener/utils"
@@ -35,6 +36,7 @@ func NewURLService(urlRepo repository.UrlRepository, cacheRepo repository.CacheR
 
 func (u *urlService) UrlShortener(req models.ShortenRequest) (models.ShortenResponse, error) {
 	if req.LongUrl == "" {
+		fmt.Println("longUrl is empty")
 		return models.ShortenResponse{}, errors.New("long url not available")
 	}
 
@@ -61,6 +63,7 @@ func (u *urlService) UrlShortener(req models.ShortenRequest) (models.ShortenResp
 	u.cacheRepo.Set(req.LongUrl, code, 7*24*time.Hour)
 	u.cacheRepo.Set(code, req.LongUrl, 7*24*time.Hour)
 
+	fmt.Printf("short url created %s", code)
 	return models.ShortenResponse{ShortUrl: fmt.Sprintf("%s/%s", u.baseURL, code)}, nil
 
 }

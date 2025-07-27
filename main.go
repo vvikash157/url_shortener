@@ -1,9 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/vvikash157/url_shortener/config"
 	"github.com/vvikash157/url_shortener/controller"
@@ -36,8 +41,47 @@ func main() {
 
 	router.HandleFunc("/shortner", controller.ShortUrlHandler).Methods("POST")
 	router.HandleFunc("/{code}", controller.RedirectOnURL).Methods("GET")
+
 	c := cors.AllowAll()
 	handler := c.Handler(router)
-	fmt.Println("server started at 8080")
-	log.Fatal(http.ListenAndServe(":8080", handler))
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // default for local dev
+	}
+
+	server := &http.Server{
+		Addr:    ":" + port,
+		Handler: handler,
+	}
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, syscall.SIGTERM)
+
+	go func() {
+		<-sigChan
+		log.Println("shutting down server....")
+
+		err := gracefulShutDown(server, 25*time.Second)
+		if err != nil {
+			log.Printf("getting error from while shutting Down %s", err.Error())
+		}
+
+		os.Exit(0)
+
+	}()
+
+	fmt.Printf("server started at %s", port)
+	if err := server.ListenAndServe(); err != http.ErrServerClosed {
+		log.Fatalf("ListenAndServe error %s", err)
+	}
+	log.Fatal()
+}
+
+func gracefulShutDown(server *http.Server, maximumTime time.Duration) error {
+	ctx, cancel := context.WithTimeout(context.Background(), maximumTime)
+	defer cancel()
+	fmt.Println("Server gracefully Shutdown")
+	return server.Shutdown(ctx)
 }
